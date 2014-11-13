@@ -18,10 +18,13 @@ $deps = [ 'build-essential',
           'python-lxml',
           'python-webob',
           'python-routes',
-          'python-parimiko',
+          'python-paramiko',
           'python-oslo.config',
           'python-netaddr',
-          'msgpack-python'
+          'msgpack-python',
+          'python-greenlet',
+          'python-pip',
+          'python-dev'
 ]
 
 package { $deps:
@@ -67,4 +70,20 @@ vcsrepo { '/home/vagrant/scinet':
     user     => 'vagrant',
     source   => 'git://github.com/chrissmall22/SciPass',
     revision => 'odl'
+}
+
+vcsrepo { '/home/vagrant/ryu':
+    ensure   => present,
+    provider => git,
+    user     => 'vagrant',
+    source   => 'https://github.com/osrg/ryu',
+    before   => Exec['Install Ryu']
+}
+
+exec { 'Install Ryu':
+    command => 'python ./setup.py install',
+    cwd     => '/home/vagrant/ryu',
+    user    => 'vagrant',
+    path    => $::path,
+    timeout => 0
 }
