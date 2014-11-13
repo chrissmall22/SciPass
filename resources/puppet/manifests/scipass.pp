@@ -10,7 +10,18 @@ $deps = [ 'build-essential',
           'python-twisted-conch',
           'python-twisted-web',
           'xauth',
-          'openvswitch-switch'
+          'openvswitch-switch',
+          'python-coverage',
+          'python-mock',
+          'python-ipaddr',
+          'python-libxml2',
+          'python-lxml',
+          'python-webob',
+          'python-routes',
+          'python-parimiko',
+          'python-oslo.config',
+          'python-netaddr',
+          'msgpack-python'
 ]
 
 package { $deps:
@@ -50,5 +61,10 @@ exec { 'Extract ODL':
     require => Exec['ODL-2.0']
 }
 
-
-
+vcsrepo { '/home/vagrant/scinet':
+    ensure   => present,
+    provider => git,
+    user     => 'vagrant',
+    source   => 'git://github.com/chrissmall22/SciPass',
+    revision => 'odl'
+}
