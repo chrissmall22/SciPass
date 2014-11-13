@@ -19,11 +19,14 @@
      <!-- this is my main wan port -->
      <port of_port_id="3" type="wan" name="foo8" description="wan int" />
 
+     <port of_port_id="4" type="fw_lan" name="foo10" description="fw lan" />
+     <port of_port_id="5" type="fw_wan" name="foo11" description="fw_wan" />
 
-     <sensor_port of_port_id="4" bw="10G" sensor_id="sensor1" admin_status="active" description="some host"/>
-     <sensor_port of_port_id="5" bw="10G" sensor_id="sensor2" admin_status="active" description="some host"/>
-     <sensor_port of_port_id="6" bw="10G" sensor_id="sensor3" admin_status="disabled" description="some host" />
-     <sensor_port of_port_id="7" bw="10G" sensor_id="sensor4" admin_status="spare" description="some host" />
+
+     <sensor_port of_port_id="6" bw="10G" sensor_id="sensor1" admin_status="active" description="some host"/>
+     <sensor_port of_port_id="7" bw="10G" sensor_id="sensor2" admin_status="active" description="some host"/>
+     <sensor_port of_port_id="8" bw="10G" sensor_id="sensor3" admin_status="disabled" description="some host" />
+     <sensor_port of_port_id="9" bw="10G" sensor_id="sensor4" admin_status="spare" description="some host" />
 
    </domain>
   </switch>
