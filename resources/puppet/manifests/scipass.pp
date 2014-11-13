@@ -64,7 +64,7 @@ exec { 'Extract ODL':
     require => Exec['ODL-2.0']
 }
 
-vcsrepo { '/home/vagrant/scinet':
+vcsrepo { '/home/vagrant/scipass':
     ensure   => present,
     provider => git,
     user     => 'vagrant',
