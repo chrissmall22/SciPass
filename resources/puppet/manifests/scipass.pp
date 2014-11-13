@@ -68,7 +68,7 @@ vcsrepo { '/home/vagrant/scipass':
     ensure   => present,
     provider => git,
     user     => 'vagrant',
-    source   => 'git://github.com/chrissmall22/SciPass',
+    source   => 'https://github.com/chrissmall22/SciPass',
     revision => 'odl'
 }
 
