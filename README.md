@@ -21,12 +21,29 @@ To create the VM with SciPass and ODL installed
       vagrant up
       vagrant ssh scipass
 
+To start the Ryu version of SciPass
+		
+	  cd scipass/python	
+	  sudo mkdir /etc/SciPass
+	  sudo cp t/etc/SciPass-mininet.xml /etc/SciPass
+	  ryu-manager Ryu.py
+
+
+To create a Mininet network to match SciPass-mininet.xml
+
+	  cd mininet
+	  mn --controller=remote,ip=localhost 
+
+Postman
+=======
+Install Postman for Chrome http://www.getpostman.com/
+
+Add repository at scipass/resources/postman/SciPass-API.json.postman_collection
+
+OpenDayLight
+===========
+
 To start up the OpenDaylight Controller
 
       cd distribution-karaf-0.2.0-Helium
       bin/karaf
-
-To create a 2-node Mininet network 
-
-	  cd mininet
-	  mn --controller=remote,ip=localhost 
