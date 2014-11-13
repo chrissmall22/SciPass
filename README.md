@@ -32,13 +32,14 @@ To start the Ryu version of SciPass
 To create a Mininet network to match SciPass-mininet.xml
 
 	  cd mininet
-	  mn --controller=remote,ip=localhost 
+	  sudo mn --topo single,7 --mac --switch ovsk --controller remote
 
 Postman
 =======
 Install Postman for Chrome http://www.getpostman.com/
 
 Add repository at scipass/resources/postman/SciPass-API.json.postman_collection
+
 
 OpenDayLight
 ===========
