@@ -1,3 +1,7 @@
 *.pyc
 .vagrant/*
 .idea/*
+*,cover
+coverage.xml
+python/.coverage
+python/htmlcov 
