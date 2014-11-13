@@ -1,0 +1,269 @@
+{
+	"id": "35a3cdcb-55df-9be0-47d1-58a7fc4d0ce4",
+	"name": "SciPass API",
+	"description": "SDN powered Science DMZ and IDS Load Balancer \n\nhttp://globalnoc.iu.edu/sdn/scipass.html",
+	"order": [
+		"4a642c67-78c5-7206-fff2-387c1259b279",
+		"cecfceb5-bf3e-e220-c372-eb3e8afccf13",
+		"516fb4bc-b5f0-b254-108e-d987e1c423ea",
+		"0723aabb-8fd8-9872-894d-8bae55366a68",
+		"f29ece83-d848-24dc-37aa-47b1509636d3",
+		"76b13b3a-a812-bd55-7f11-113b07c9b6f7",
+		"fd0990a4-90b1-1265-239d-0e9e65cc2a5f",
+		"84b5ad94-f614-f9f9-0af5-5f88ed96ba78",
+		"b44b355d-3582-6323-542e-c312ff4a776d",
+		"0b8f1794-fe4d-bcbf-c446-fd26ac1f1754"
+	],
+	"folders": [],
+	"timestamp": 1415861202181,
+	"synced": false,
+	"requests": [
+		{
+			"id": "0723aabb-8fd8-9872-894d-8bae55366a68",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\nAccept: application/json\nContent-Type: application/json\n",
+			"url": "http://{{controllerHost}}:{{controllerPort}}/scipass/flows/good_flow",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"time": 1415862011803,
+			"name": "Put Good Flow",
+			"description": "",
+			"collectionId": "35a3cdcb-55df-9be0-47d1-58a7fc4d0ce4",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "0b8f1794-fe4d-bcbf-c446-fd26ac1f1754",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\nAccept: application/json\nContent-Type: application/json\n",
+			"url": "http://{{controllerHost}}:{{controllerPort}}/scipass/switch/0000000000000001/domain/R&E/flows",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [
+				{
+					"key": "sensor_id",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "load",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"time": 1415863338608,
+			"name": "Get Domain R&E Flows",
+			"description": "",
+			"collectionId": "35a3cdcb-55df-9be0-47d1-58a7fc4d0ce4",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "4a642c67-78c5-7206-fff2-387c1259b279",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\nAccept: application/json\nContent-Type: application/json\n",
+			"url": "http://{{controllerHost}}:{{controllerPort}}/scipass/flows/get_good_flows",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"time": 1415862080367,
+			"name": "Get Good Flows",
+			"description": "",
+			"collectionId": "35a3cdcb-55df-9be0-47d1-58a7fc4d0ce4",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "516fb4bc-b5f0-b254-108e-d987e1c423ea",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\nAccept: application/json\nContent-Type: application/json\n",
+			"url": "http://{{controllerHost}}:{{controllerPort}}/scipass/switch/0000000000000001/flows",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"time": 1415861820792,
+			"name": "Get Flows from DPID 1",
+			"description": "",
+			"collectionId": "35a3cdcb-55df-9be0-47d1-58a7fc4d0ce4",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "76b13b3a-a812-bd55-7f11-113b07c9b6f7",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\nAccept: application/json\nContent-Type: application/json\n",
+			"url": "http://{{controllerHost}}:{{controllerPort}}/scipass/flows/good_flow",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [
+				{
+					"key": "sensor_id",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "load",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"time": 1415862602431,
+			"name": "Put Sensor 1 Load 1",
+			"description": "",
+			"collectionId": "35a3cdcb-55df-9be0-47d1-58a7fc4d0ce4",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "84b5ad94-f614-f9f9-0af5-5f88ed96ba78",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\nAccept: application/json\nContent-Type: application/json\n",
+			"url": "http://{{controllerHost}}:{{controllerPort}}/scipass/switches",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"data": [
+				{
+					"key": "sensor_id",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "load",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"name": "Get Domains",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1415863150714,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "35a3cdcb-55df-9be0-47d1-58a7fc4d0ce4",
+			"synced": false
+		},
+		{
+			"id": "b44b355d-3582-6323-542e-c312ff4a776d",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\nAccept: application/json\nContent-Type: application/json\n",
+			"url": "http://{{controllerHost}}:{{controllerPort}}/scipass/switch/0000000000000001/domain/R&E",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [
+				{
+					"key": "sensor_id",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "load",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"time": 1415863274971,
+			"name": "Get Domain R&E Sensors",
+			"description": "",
+			"collectionId": "35a3cdcb-55df-9be0-47d1-58a7fc4d0ce4",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "cecfceb5-bf3e-e220-c372-eb3e8afccf13",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\nAccept: application/json\nContent-Type: application/json\n",
+			"url": "http://{{controllerHost}}:{{controllerPort}}/scipass/flows/get_bad_flows",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"time": 1415861635872,
+			"name": "Get Bad Flows",
+			"description": "",
+			"collectionId": "35a3cdcb-55df-9be0-47d1-58a7fc4d0ce4",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "f29ece83-d848-24dc-37aa-47b1509636d3",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\nAccept: application/json\nContent-Type: application/json\n",
+			"url": "http://{{controllerHost}}:{{controllerPort}}/scipass/flows/good_flow",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "PUT",
+			"data": [],
+			"dataMode": "params",
+			"name": "Put Bad Flow",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1415862418371,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "35a3cdcb-55df-9be0-47d1-58a7fc4d0ce4",
+			"synced": false
+		},
+		{
+			"id": "fd0990a4-90b1-1265-239d-0e9e65cc2a5f",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\nAccept: application/json\nContent-Type: application/json\n",
+			"url": "http://{{controllerHost}}:{{controllerPort}}/scipass/switches",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [
+				{
+					"key": "sensor_id",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "load",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"time": 1415862643099,
+			"name": "Get Switches",
+			"description": "",
+			"collectionId": "35a3cdcb-55df-9be0-47d1-58a7fc4d0ce4",
+			"responses": [],
+			"synced": false
+		}
+	]
+}
