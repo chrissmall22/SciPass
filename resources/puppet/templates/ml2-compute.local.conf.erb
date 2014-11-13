@@ -1,0 +1,103 @@
+[[local|localrc]]
+SCREEN_LOGDIR=/opt/stack/log
+LOGFILE=stack.sh.log
+LOG_COLOR=False
+#OFFLINE=True
+#RECLONE=no
+VERBOSE=True
+
+disable_all_services
+# openvswitch
+#enable_service neutron q-agt n-cpu qpid n-novnc
+
+#opendaylight
+enable_service neutron q- n-cpu qpid n-novnc odl-compute
+
+HOST_IP=192.168.51.21
+HOST_NAME=devstack-odl-compute
+SERVICE_HOST_NAME=devstack-odl
+SERVICE_HOST=192.168.51.20
+Q_HOST=$SERVICE_HOST
+
+#Q_PLUGIN=openvswitch
+#ENABLE_TENANT_VLANS=True
+#TENANT_VLAN_RANGE=2000:2999
+#PHYSICAL_NETWORK=physnet1
+#OVS_PHYSICAL_BRIDGE=br-eth1
+## If using OVS_BRIDGE_MAPPINGS, you need to create the bridges manually.
+##OVS_BRIDGE_MAPPINGS=physnet1:br-eth1
+
+# openvswitch ml2
+#Q_PLUGIN=ml2
+#Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge
+#Q_ML2_PLUGIN_TYPE_DRIVERS=vlan,flat
+###ML2_VLAN_RANGES=physnet1:2000:2999,physnet3:3000:3999
+#ML2_VLAN_RANGES=physnet1:2000:2999
+#ENABLE_TENANT_VLANS=True
+#PHYSICAL_NETWORK=physnet1
+#OVS_PHYSICAL_BRIDGE=br-eth1
+## If using OVS_BRIDGE_MAPPINGS, you need to create the bridges manually.
+##OVS_BRIDGE_MAPPINGS=physnet1:br-eth1,physnet3:br-eth3
+##OVS_BRIDGE_MAPPINGS=physnet1:br-eth1
+
+# openvswitch ml2 vlan+tunnels
+#Q_PLUGIN=ml2
+# all mechanism and type drivers are enabled by default
+##Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge
+##Q_ML2_PLUGIN_TYPE_DRIVERS=flat,vlan,gre,vxlan
+##ML2_VLAN_RANGES=physnet1:2000:2999,physnet3:3000:3999
+#ML2_VLAN_RANGES=physnet1:2000:2999
+#ENABLE_TENANT_VLANS=True
+#ENABLE_TENANT_TUNNELS=True
+#PHYSICAL_NETWORK=physnet1
+#OVS_PHYSICAL_BRIDGE=br-eth1
+## If using OVS_BRIDGE_MAPPINGS, you need to manually add the bridges.
+##OVS_BRIDGE_MAPPINGS=physnet1:br-eth1,physnet3:br-eth3
+##OVS_BRIDGE_MAPPINGS=physnet1:br-eth1
+
+# opendaylight ml2
+ODL_MGR_IP=192.168.51.1
+Q_PLUGIN=ml2
+#Q_ML2_PLUGIN_MECHANISM_DRIVERS=opendaylight
+##Q_ML2_PLUGIN_TYPE_DRIVERS=flat,vlan,gre,vxlan
+##ML2_VLAN_RANGES=physnet1:2000:2999,physnet3:3000-3999
+ENABLE_TENANT_VLANS=True
+ENABLE_TENANT_TUNNELS=True
+##Q_ML2_TENANT_NETWORK_TYPE=gre
+####PHYSICAL_NETWORK=physnet1
+####PHYSICAL_NETWORK=default
+####OVS_PHYSICAL_BRIDGE=br-eth1
+### If using OVS_BRIDGE_MAPPINGS, you need to create the bridges manually.
+###OVS_BRIDGE_MAPPINGS=physnet1:eth1:physnet3:eth3
+ODL_PROVIDER_MAPPINGS=physnet1:eth1
+##NEUTRON_REPO=https://github.com/CiscoSystems/neutron.git
+##NEUTRON_BRANCH=odl_ml2
+
+VNCSERVER_PROXYCLIENT_ADDRESS=192.168.51.21
+VNCSERVER_LISTEN=0.0.0.0
+
+#FLOATING_RANGE=192.168.122.0/28
+#PUBLIC_NETWORK_GATEWAY=192.168.122.1
+#Q_FLOATING_ALLOCATION_POOL=start=192.168.122.10,end=192.168.122.15
+
+MYSQL_HOST=$SERVICE_HOST
+RABBIT_HOST=$SERVICE_HOST
+GLANCE_HOSTPORT=$SERVICE_HOST:9292
+KEYSTONE_AUTH_HOST=$SERVICE_HOST
+KEYSTONE_SERVICE_HOST=$SERVICE_HOST
+
+MYSQL_PASSWORD=mysql
+RABBIT_PASSWORD=rabbit
+QPID_PASSWORD=rabbit
+SERVICE_TOKEN=service
+SERVICE_PASSWORD=admin
+ADMIN_PASSWORD=admin
+
+[[post-config|/etc/neutron/plugins/ml2/ml2_conf.ini]]
+[ml2_odl]
+url=http://192.168.51.1:8080/controller/nb/v2/neutron
+username=admin
+password=admin
+
+[agent]
+minimize_polling=True
