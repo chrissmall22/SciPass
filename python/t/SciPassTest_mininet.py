@@ -20,7 +20,7 @@ class TestInit(unittest.TestCase):
 
     def test_valid_config(self):
         api = SciPass( logger = logging.getLogger(__name__),
-                          config = str(os.getcwd()) + "/t/etc/SciPass_mininet.xml"
+                          config = str(os.getcwd()) + "/t/etc/SciPass-mininet.xml"
                           )
         self.assertTrue(isinstance(api,SciPass))
         
@@ -40,7 +40,7 @@ class TestInit(unittest.TestCase):
 
     def test_switch_init(self):
         api = SciPass( logger = logging.getLogger(__name__),
-                          config = str(os.getcwd()) + "/t/etc/SciPass_mininet.xml" )
+                          config = str(os.getcwd()) + "/t/etc/SciPass-mininet.xml" )
 
         #first setup the handler to get all the flows that were sent
         flows = []
@@ -163,7 +163,7 @@ class TestInit(unittest.TestCase):
 class TestFunctionality(unittest.TestCase):
     def setUp(self):
         self.api = SciPass( logger = logging.getLogger(__name__),
-                          config = str(os.getcwd()) + "/t/etc/SciPass.xml" )
+                          config = str(os.getcwd()) + "/t/etc/SciPass-mininet.xml" )
         
     def test_update_prefix_bw(self):
         #first setup the handler to get all the flows that were sent

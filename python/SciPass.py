@@ -68,7 +68,7 @@ class SciPass:
       for name in self.config[datapath_id]:
         for port in self.config[datapath_id][name]['ports']['lan']:
             for prefix in port['prefixes']:
-              self.logger.error("Comparing" + str(new_prefix) + " " + str(prefix['prefix']))
+              #self.logger.error("Comparing" + str(new_prefix) + " " + str(prefix['prefix']))
               if(prefix['prefix'].Contains( new_prefix )):
                 in_port = port
                 dpid = datapath_id
@@ -652,7 +652,7 @@ class SciPass:
     actions = []
     actions.append({"type": "output",
                     "port": int(ports['wan'][0]['port_id'])})
-    self.logger.error("FW WAN -> WAN: ")
+    #self.logger.error("FW WAN -> WAN: ")
     self.fireForwardingStateChangeHandlers( dpid         = dpid,
                                             domain       = domain_name,
                                             header       = header,
@@ -668,7 +668,7 @@ class SciPass:
     actions = []
     actions.append({"type": "output",
                     "port": int(ports['fw_wan'][0]['port_id'])})
-    self.logger.error("WAN -> FW WAN")
+    #self.logger.error("WAN -> FW WAN")
     self.fireForwardingStateChangeHandlers( dpid         = dpid,
                                             domain       = domain_name,
                                             header       = header,
@@ -716,7 +716,7 @@ class SciPass:
     actions = []
     actions.append({"type": "output",
                     "port": int(ports['lan'][0]['port_id'])})
-    self.logger.error("FW WAN -> WAN: ")
+    #self.logger.error("FW WAN -> WAN: ")
     self.fireForwardingStateChangeHandlers( dpid         = dpid,
                                             domain       = domain_name,
                                             header       = header,
