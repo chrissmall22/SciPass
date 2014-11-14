@@ -198,7 +198,7 @@ class TestFunctionality(unittest.TestCase):
         flow = flows[0]
         self.assertEqual(int(flow['hard_timeout']),0)
         self.assertEqual(int(flow['idle_timeout']),90)
-        self.assertEqual(flow['actions'],[{'type': 'output', 'port': '10'}])
+        self.assertEqual(flow['actions'],[{'type': 'output', 'port': '3'}])
         self.assertEqual(flow['header'],{'phys_port': 2, 'nw_src_mask': 32, 'nw_dst_mask': 32, 'nw_src': 167777282, 'tp_dst': 2, 'tp_src': 1, 'nw_dst': 2620917249})
         self.assertEqual(int(flow['priority']),900)
         self.assertEqual(flow['command'],"ADD")
@@ -239,7 +239,7 @@ class TestFunctionality(unittest.TestCase):
         self.assertEqual(int(flow['hard_timeout']),0)
         self.assertEqual(int(flow['idle_timeout']),90)
         self.assertEqual(flow['actions'],[])
-        self.assertEqual(flow['header'],{'phys_port': 10, 'nw_src_mask': 32, 'nw_dst_mask': 32, 'nw_dst': 167777282, 'tp_dst': 1, 'tp_src': 2, 'nw_src': 2620917249})
+        self.assertEqual(flow['header'],{'phys_port': 3, 'nw_src_mask': 32, 'nw_dst_mask': 32, 'nw_dst': 167777282, 'tp_dst': 1, 'tp_src': 2, 'nw_src': 2620917249})
         self.assertEqual(int(flow['priority']),900)
         self.assertEqual(flow['command'],"ADD")
         self.assertEqual(flow['dpid'],"%016x" % datapath.id)
