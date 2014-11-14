@@ -32,7 +32,7 @@ To start the Ryu version of SciPass
 To create a Mininet network to match SciPass-mininet.xml
 
 	  cd mininet
-	  sudo mn --topo single,7 --mac --switch ovsk --controller remote
+	  sudo mn --topo single,9 --mac --switch ovsk --controller remote
 
 Postman
 =======
