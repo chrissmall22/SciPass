@@ -116,7 +116,7 @@ class TestInit(unittest.TestCase):
         flow = flows[11]
         self.assertEquals(flow['actions'],[{'type': 'output', 'port': 3}])
         self.assertEquals(flow['command'],"ADD")
-        self.assertEquals(flow['header'], {'phys_port': 7, 'dl_type': None})
+        self.assertEquals(flow['header'], {'phys_port': 5, 'dl_type': None})
         self.assertEquals(flow['priority'], 10)
         flow = flows[12]
         self.assertEquals(flow['actions'],[{'type': 'output', 'port': 5}])
