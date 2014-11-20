@@ -47,8 +47,8 @@ class SciPassRest():
         flows = self.api.get_food_flows
         return flows
 
-    def run_server(self):
-        run('scipass',host='localhost', port=8080)
+    def run_server(self,host,port):
+        run('scipass',host=host, port=port)
 
 class HPVAN():
     
@@ -68,25 +68,30 @@ class HPVAN():
         
         self.logger.error("Starting SciPass")
         #
-
-
         api = SciPass(logger = self.logger,
                       config_file = self.CONF.SciPassConfig )
-        
         api.registerForwardingStateChangeHandler(self.changeSwitchForwardingState)
 
         self.api = api
 
-        # Start REST interface
-        SciPassRest(api).run_server()
         
     def connect_controller(self, controller, port, username, password):
 
 
         self.logger.debug("Connecting to VAN controller" + controller)
-
         auth = hp.XAuthToken(user=username, password=password, server=controller)
         api = hp.Api(controller=controller, auth=auth)
+
+
+    def start_rest_interface(self, host, port):
+
+        """
+
+        :rtype : object
+        """
+        SciPassRest(self.api).run_server(host, port)
+
+
         
     def changeSwitchForwardingState(self, dpid=None, header=None, actions=None, command=None, idle_timeout=None, hard_timeout=None, priority=1):
         self.logger.debug("Changing switch forwarding state")
@@ -209,7 +214,7 @@ class HPVAN():
         mod = parser.OFPFlowMod(datapath,match,0,ofp.OFPFC_DELETE)
         
          #--- remove mods in the flowmod cache
-        self.flowmods[dpid] = []
+        #self.flowmods[dpid] = []
         
         
          #--- if dp is active then push the rules
@@ -220,52 +225,7 @@ class HPVAN():
       #--- routine to syncronize the rules to the DP
       #--- currently just pushes, somday should diff
          
-      #--- yep thats a hack, need to think about what multiple switches means for scipass
-         if(not self.datapaths.has_key(dpid)):
-             self.logger.error("unable to find switch with dpid " + dpid)
-             return
 
-         datapath = self.datapaths[dpid]
-         if(datapath.is_active == True):
-             for mod in self.flowmods:
-                 datapath.send_msg(mod)
 
-    def _stats_loop(self):
-         while 1:
-          #--- send stats request
-             for dp in self.datapaths.values():
-                 self._request_stats(dp)
-                 
-             #--- sleep
-             hub.sleep(self.statsInterval)
+   
 
-    def _balance_loop(self):
-         while 1:
-             self.logger.debug("here!!")
-             #--- tell the system to rebalance
-             self.api.run_balancers()
-             #--- sleep
-             hub.sleep(self.balanceInterval)
-
-    def _request_stats(self,datapath):
-        ofp    = datapath.ofproto
-        parser = datapath.ofproto_parser
-
-        cookie = cookie_mask = 0
-        match  = parser.OFPMatch()
-        req    = parser.OFPFlowStatsRequest(	datapath, 
-						0,
-						match,
-        					#ofp.OFPTT_ALL,
-						0xff,
-        					ofp.OFPP_NONE)
-						#0xffffffff,
-        					#cookie, 
-						#cookie_mask,
-        					#match)
-        datapath.send_msg(req)
-
-        req = parser.OFPPortStatsRequest(datapath, 0, ofp.OFPP_NONE)
-        datapath.send_msg(req)
-
-  

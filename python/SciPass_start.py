@@ -15,16 +15,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import HPVAN
+import HPVAN as van
 
-port='8080'
+def start_scipass_van():
 
-if __name__ == '__main__':
-    van = HPVAN()
     controller = "127.0.0.1"
     port = 8080
     username = "sdn"
     password = "skyline"
     van.connect_controller(controller,port)
+    van.start_rest_interface('localhost',8080)
+
+
+if __name__ == '__main__':
+    start_scipass_van()
 
 
