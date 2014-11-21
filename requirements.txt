@@ -1,0 +1,6 @@
+Routes>=1.12.3
+bottle>=0.10.6
+coverage>=3.7.1
+hp-sdn-client>=1.1.0
+lxml>=2.3.2
+mock>=1.0.1
