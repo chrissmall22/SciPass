@@ -1,3 +1,5 @@
+general:
+ build_dir: python
 test:
   override:
-    - nosetests python/t
+    - nosetests t//SciPassTest_mininet.py
