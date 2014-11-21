@@ -42,21 +42,23 @@ class SciPassRest():
     @route('/scipass/test')
     def test(self):
         return "test"
+
     @route('/scipass/flows')
     def test(self):
         flows = self.api.get_food_flows
         return flows
 
-    def run_server(self,host,port):
-        run('scipass',host=host, port=port)
+    def run_server(self, host, port):
+        run('scipass', host=host, port=port)
 
-class HPVAN():
-    
-    def __init__(self):
+class HPVAN(type):
+
+    def __init__(self, controller, port, username, password):
+        super(HPVAN,self).__init__(controller, port, username)
 
         self.datapaths = {}
 
-        # Set Logger
+        logging.basicConfig()
         self.logger = logging.getLogger(__name__)
 
         #--- register for configuration options
@@ -74,10 +76,6 @@ class HPVAN():
 
         self.api = api
 
-        
-    def connect_controller(self, controller, port, username, password):
-
-
         self.logger.debug("Connecting to VAN controller" + controller)
         auth = hp.XAuthToken(user=username, password=password, server=controller)
         api = hp.Api(controller=controller, auth=auth)
@@ -85,10 +83,6 @@ class HPVAN():
 
     def start_rest_interface(self, host, port):
 
-        """
-
-        :rtype : object
-        """
         SciPassRest(self.api).run_server(host, port)
 
 
@@ -220,12 +214,5 @@ class HPVAN():
          #--- if dp is active then push the rules
         if(datapath.is_active == True):
             datapath.send_msg(mod)
-            
-    def synchRules(self, dpid):
-      #--- routine to syncronize the rules to the DP
-      #--- currently just pushes, somday should diff
-         
 
-
-   
 
