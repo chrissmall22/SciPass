@@ -2,7 +2,7 @@ general:
  build_dir: python
 dependencies:
   pre:
-    - apt-get install python-libxml2 
+    - sudo apt-get install python-libxml2 
 test:
   override:
     - nosetests t//SciPassTest_mininet.py
