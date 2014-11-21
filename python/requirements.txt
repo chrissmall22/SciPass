@@ -5,3 +5,4 @@ hp-sdn-client>=1.1.0
 lxml>=2.3.2
 mock>=1.0.1
 ipaddr>=2.1.10
+libxml2>=2.6
