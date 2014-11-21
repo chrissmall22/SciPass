@@ -5,8 +5,8 @@ python:
   - "3.3"
 
 install:
-  "pip install -r python/requirements.txt"
-  "pip install coveralls"
+  - pip install -r python/requirements.txt
+  - pip install coveralls
 
 script:
   - make test_mininet
