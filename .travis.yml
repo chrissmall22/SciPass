@@ -10,6 +10,7 @@ before_install:
   - tar -xzvf libxml2-python-2.6.15.tar.gz
   - cd libxml2-python-2.6.15 && python setup.py install
 install:
+  - cd ..
   - pip install -r python/requirements.txt
   - pip install coveralls
 
