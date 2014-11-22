@@ -51,12 +51,16 @@ class SciPassRest():
     def run_server(self, host, port):
         run('scipass', host=host, port=port)
 
+
 class HPVAN(type):
 
-    def __init__(self, controller, port, username, password):
-        super(HPVAN,self).__init__(controller, port, username)
+    def __init__(self, *args, **kwargs):
+        super(HPVAN, self).__init__(*args, **kwargs)
 
         self.datapaths = {}
+        self.username = "sdn"
+        self.password = "skyline"
+        self.controller = "15.126.229.78"
 
         logging.basicConfig()
         self.logger = logging.getLogger(__name__)
@@ -76,9 +80,9 @@ class HPVAN(type):
 
         self.api = api
 
-        self.logger.debug("Connecting to VAN controller" + controller)
-        auth = hp.XAuthToken(user=username, password=password, server=controller)
-        api = hp.Api(controller=controller, auth=auth)
+        self.logger.debug("Connecting to VAN controller" + self.controller)
+        auth = hp.XAuthToken(user=self.username, password=self.password, server=self.controller)
+        api = hp.Api(controller=self.controller, auth=auth)
 
 
     def start_rest_interface(self, host, port):
@@ -215,4 +219,13 @@ class HPVAN(type):
         if(datapath.is_active == True):
             datapath.send_msg(mod)
 
+
+def start_scipass_van():
+
+    scipass = HPVAN()
+    scipass.start_rest_interface('localhost',8080)
+
+
+if __name__ == '__main__':
+    start_scipass_van()
 
