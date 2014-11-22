@@ -6,8 +6,7 @@ python:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y libxml2-dev
-  - sudo apt-get install -y python-libxml2 python-dev libxslt-dev
-
+  - sudo apt-get install -y python-libxml2 python-dev libxslt-dev python-all python-mock python-ipaddr
 install:
   - pip install -r python/requirements.txt
   - pip install coveralls
