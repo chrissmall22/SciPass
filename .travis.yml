@@ -15,7 +15,8 @@ install:
   - pip install coveralls
 
 script:
-  - make test_mininet
+  - cd python
+  - coverage run --source=./ --omit=__init__.py,*Test.py,t/SciPass.py t/SciPassTest_mininet.py
 
 after_success:
-  - coveralls
+  coveralls
