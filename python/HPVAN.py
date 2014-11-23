@@ -15,7 +15,8 @@
 # limitations under the License.
 
 import logging
-from bottle import run, route
+from bottle import run as bottle_run
+from bottle import route
 
 import oslo.config.cfg as cfg
 import hpsdnclient as hp
@@ -52,10 +53,9 @@ class SciPassRest():
         run('scipass', host=host, port=port)
 
 
-class HPVAN(type):
+class HPVAN():
 
-    def __init__(self, *args, **kwargs):
-        super(HPVAN, self).__init__(*args, **kwargs)
+    def __init__(self, user, pw, controller):
 
         self.datapaths = {}
         self.username = "sdn"
@@ -85,9 +85,9 @@ class HPVAN(type):
         api = hp.Api(controller=self.controller, auth=auth)
 
 
-    def start_rest_interface(self, host, port):
-
-        SciPassRest(self.api).run_server(host, port)
+    def start_rest(self, host, port):
+        module = "SciPass"
+        bottle_run(module,host=host,port=port)
 
 
         
@@ -222,7 +222,9 @@ class HPVAN(type):
 
 def start_scipass_van():
 
-    scipass = HPVAN()
+    log = logging.getLogger(__name__)
+
+    scipass = HPVAN(logger=log,config='/etc/SciPass/SciPass.xml')
     scipass.start_rest_interface('localhost',8080)
 
 

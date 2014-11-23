@@ -15,7 +15,8 @@
 # limitations under the License.
 
 import logging
-from bottle import run, route
+from bottle import run as bottle_run
+from bottle import route 
 
 import oslo.config.cfg as cfg
 import hpsdnclient as hp
@@ -75,9 +76,10 @@ class TestVAN():
         auth = hp.XAuthToken(user=user, password=pw, server=controller)
         api = hp.Api(controller=controller, auth=auth)
 
-        run("scipass", host="127.0.0.1", port=8080)
 
-
+    def start_rest(self, host, port):
+        module = "SciPass"
+	bottle_run(module, host=host, port=port)
         
     def changeSwitchForwardingState(self, dpid=None, header=None, actions=None, command=None, idle_timeout=None, hard_timeout=None, priority=1):
         self.logger.debug("Changing switch forwarding state")
@@ -139,7 +141,8 @@ def start_scipass_van():
     username = "sdn"
     password = "skyline"
     controller = "15.126.229.78"
-    scipass = TestVAN(username, password, controller)
+    van = TestVAN(username, password, controller)
+    van.start_rest("127.0.0.1",8090)
 
 
 

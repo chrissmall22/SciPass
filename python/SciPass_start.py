@@ -19,8 +19,11 @@ import HPVAN
 
 def start_scipass_van():
 
-    scipass = HPVAN()
-    scipass.start_rest_interface('localhost',8080)
+    username = "sdn"
+    password = "skyline"
+    controller = "15.126.229.78"
+    van = HPVAN(username, password, controller)
+    van.start_rest("127.0.0.1",8090)
 
 
 if __name__ == '__main__':
