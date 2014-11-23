@@ -17,13 +17,19 @@
 import logging
 from bottle import run as bottle_run
 from bottle import route
+from webob import Response
 
 import oslo.config.cfg as cfg
 import hpsdnclient as hp
+import json
 
 from SciPass import SciPass
 
 ETH_TYPE_IP = 0x0800
+_DPID_LEN = 16
+_DPID_LEN_STR = str(_DPID_LEN)
+_DPID_FMT = '%0' + _DPID_LEN_STR + 'x'
+DPID_PATTERN = r'[0-9a-f]{%d}' % _DPID_LEN
 
 
 """
@@ -38,19 +44,87 @@ ETH_TYPE_IP = 0x0800
 class SciPassRest():
     def __init__(self, api):
         self.api = api
+        self.logger = api.logger
 
-    #GET /scipass/test
-    @route('/scipass/test')
-    def test(self):
-        return "test"
+    #POST /scipass/flows/good_flow
+    @route('/scipass/flows/good_flow')
+    def good_flow(self, req):
+        try:
+            obj = eval(req.body)
+        except SyntaxError:
+            self.logger.error("Syntax Error processing good_flow signal %s", req.body)
+            return Response(status=400)
 
-    @route('/scipass/flows')
-    def test(self):
-        flows = self.api.get_food_flows
-        return flows
+        result = self.api.good_flow(obj)
+        return Response(content_type='application/json',body=json.dumps(result))
 
-    def run_server(self, host, port):
-        run('scipass', host=host, port=port)
+    #POST /scipass/flows/bad_flow
+    @route('scipass', '/scipass/flows/bad_flow', methods=['PUT'])
+    def bad_flow(self, req):
+        try:
+            obj = eval(req.body)
+        except SyntaxError:
+            self.logger.error("Syntax Error processing bad_flow signal %s", req.body)
+            return Response(status=400)
+        result = self.api.bad_flow(obj)
+        return Response(content_type='application/json',body=json.dumps(result))
+
+    #GET /scipass/flows/get_good_flows
+    @route('scipass', '/scipass/flows/get_good_flows', methods=['GET'])
+    def get_good_flows(self, req):
+        result = self.api.get_good_flows()
+        return Response(content_type='application/json',body=json.dumps(result))
+
+    #GET /scipass/flows/get_bad_flows
+    @route('scipass', '/scipass/flows/get_bad_flows', methods=['GET'])
+    def get_bad_flows(self, req):
+        result = self.api.get_bad_flows()
+        return Response(content_type='application/json',body=json.dumps(result))
+
+    @route('scipass', '/scipass/switch/{dpid}/flows', methods=['GET'], requirements= {'dpid': DPID_PATTERN})
+    def get_switch_flows(self, req, **kwargs):
+        result = self.api.getSwitchFlows(dpid=kwargs['dpid'])
+        return Response(content_type='application/json', body=json.dumps(result))
+
+    @route('scipass', '/scipass/sensor/load', methods=['PUT'])
+    def update_sensor_load(self, req):
+        try:
+            obj = eval(req.body)
+        except SyntaxError:
+            self.logger.error("Syntax Error processing update_sensor_status signal %s", req.body)
+            return Response(status=400)
+        result = self.api.setSensorStatus(obj['sensor_id'],obj['load'])
+        return Response(content_type='application/json',body=json.dumps(result))
+
+    @route('scipass', '/scipass/switch/{dpid}/domain/{domain}/sensor/{sensor_id}', methods=['GET'], requirements= {'dpid': DPID_PATTERN})
+    def get_sensor_load(self, req, **kwargs):
+        result = self.api.getSensorStatus(dpid=kwargs['dpid'], domain=kwargs['domain'], sensor_id=kwargs['sensor_id'])
+        return Response(content_type='application/json',body=json.dumps(result))
+
+    @route('scipass', '/scipass/switches', methods=['GET'])
+    def get_switches(self, req):
+        result = self.api.getSwitches()
+        return Response(content_type='application/json', body=json.dumps(result))
+
+    @route('scipass', '/scipass/switch/{dpid}/domain/{domain}/sensors', methods=['GET'], requirements = {'dpid': DPID_PATTERN})
+    def get_domain_sensors(self, req, **kwargs):
+        result = self.api.getDomainSensors(dpid = kwargs['dpid'], domain = kwargs['domain'] )
+        return Response(content_type='application/json', body=json.dumps(result))
+
+    @route('scipass', '/scipass/switch/{dpid}/domains', methods=['GET'], requirements = {'dpid': DPID_PATTERN})
+    def get_switch_domains(self, req, **kwargs):
+        result = self.api.getSwitchDomains(dpid=kwargs['dpid'])
+        return Response(content_type='application/json', body=json.dumps(result))
+
+    @route('scipass', '/scipass/switch/{dpid}/domain/{domain}', methods=['GET'], requirements = {'dpid': DPID_PATTERN})
+    def get_domain_status(self, req, **kwargs):
+        result = self.api.getDomainStatus(dpid = kwargs['dpid'], domain = kwargs['domain'])
+        return Response(content_type='application/json', body=json.dumps(result))
+
+    @route('scipass', '/scipass/switch/{dpid}/domain/{domain}/flows',methods=['GET'],requirements = {'dpid': DPID_PATTERN})
+    def get_domain_flows(self,req, **kwargs):
+        result = self.api.getDomainFlows(dpid = kwargs['dpid'], domain = kwargs['domain'])
+        return Response(content_type='application/json', body=json.dumps(result))
 
 
 class HPVAN():
