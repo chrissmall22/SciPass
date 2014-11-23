@@ -222,10 +222,11 @@ class HPVAN():
 
 def start_scipass_van():
 
-    log = logging.getLogger(__name__)
-
-    scipass = HPVAN(logger=log,config='/etc/SciPass/SciPass.xml')
-    scipass.start_rest_interface('localhost',8080)
+    username = "sdn"
+    password = "skyline"    
+    controller = "15.126.229.78"
+    scipass = HPVAN(username, password, controller)
+    scipass.start_rest('localhost',8090)
 
 
 if __name__ == '__main__':
