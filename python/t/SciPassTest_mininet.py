@@ -11,6 +11,7 @@ import logging
 import ipaddr
 import os
 from SciPass import SciPass
+from HPVAN import HPVAN
 import libxml2
 
 logging.basicConfig()
