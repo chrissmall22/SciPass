@@ -16,7 +16,7 @@ install:
 
 script:
   - cd python
-  - coverage run --source=./ --omit=__init__.py,*Test.py,t/SciPass.py t/SciPassTest_mininet.py
+  - nosetests --with-coverage t/SimpleBalancerTest.py t/SciPassTest_mininet.py t/SciPassTest.py
 
 after_success:
   coveralls

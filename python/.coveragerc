@@ -1,0 +1,2 @@
+[report]
+omit=*mock*,*libxml2*,*json*,*ipaddr*,*encodings*,*xmlrunner*,t/*.py
