@@ -1,10 +1,8 @@
 Routes>=1.12.3
 bottle>=0.10.6
 coverage>=3.7.1
-hp-sdn-client>=1.1.0
 mock>=1.0.1
 ipaddr>=2.1.0
 xmlrunner>=1.7.7
 WebOb>=1.1.1
-oslo.config>=1.2.1
-ecdsa>=0.11
+
