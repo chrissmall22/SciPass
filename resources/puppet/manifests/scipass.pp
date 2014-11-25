@@ -69,7 +69,7 @@ vcsrepo { '/home/vagrant/scipass':
     provider => git,
     user     => 'vagrant',
     source   => 'https://github.com/GlobalNOC/SciPass',
-    revision => 'odl'
+    revision => 'master'
 }
 
 vcsrepo { '/home/vagrant/ryu':
