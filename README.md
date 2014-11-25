@@ -1,8 +1,8 @@
 SciPass
 =======
 
-[![Travis Build status](https://travis-ci.org/chrissmall22/SciPass.svg?branch=master)](https://travis-ci.org/chrissmall22/SciPass)
-[![Coverage Status](https://img.shields.io/coveralls/chrissmall22/SciPass.svg)](https://coveralls.io/r/chrissmall22/SciPass)
+[![Travis Build status](https://travis-ci.org/chrissmall22/SciPass.svg?branch=hp-van)](https://travis-ci.org/chrissmall22/SciPass)
+[![Coverage Status](https://img.shields.io/coveralls/chrissmall22/SciPass.svg?branch=hp-van)](https://coveralls.io/r/chrissmall22/SciPass)
 
 SciPass is a SDN powered Science DMZ and IDS Load Balancer. 
 
