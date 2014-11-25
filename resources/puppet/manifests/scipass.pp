@@ -24,7 +24,8 @@ $deps = [ 'build-essential',
           'msgpack-python',
           'python-greenlet',
           'python-pip',
-          'python-dev'
+          'python-dev',
+          'python-tox'
 ]
 
 package { $deps:
