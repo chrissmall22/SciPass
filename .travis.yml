@@ -17,7 +17,7 @@ install:
 
 script:
   - cd python
-  - nosetests --with-coverage t/SimpleBalancerTest.py t/SciPassTest_mininet.py t/SciPassTest.py
+  - coverage run t/SciPassTest.py 
 
 after_success:
   coveralls
