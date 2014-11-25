@@ -1,4 +1,10 @@
 language: python
+
+branches:
+  only:
+    - master
+    - hp-van
+
 python:
   - "2.6"
   - "2.7"
@@ -17,7 +23,7 @@ install:
 
 script:
   - cd python
-  - nosetests --with-coverage t/SimpleBalancerTest.py t/SciPassTest_mininet.py t/SciPassTest.py
+  - coverage run --source=./ --omit=__init__.py,*Test.py,t/SciPass.py t/SciPassTest_mininet.py; coverage report -m; python -m coverage xml;coverage annotate; coverage html;
 
 after_success:
   coveralls
