@@ -81,7 +81,7 @@ vcsrepo { '/home/vagrant/ryu':
 }
 
 exec { 'Install Ryu':
-    command => 'python ./setup.py install',
+    command => 'sudo python ./setup.py install',
     cwd     => '/home/vagrant/ryu',
     user    => 'vagrant',
     path    => $::path,
