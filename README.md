@@ -28,7 +28,7 @@ To start the Ryu version of SciPass
 		
 	  cd scipass/python	
 	  sudo mkdir /etc/SciPass
-	  sudo cp t/etc/SciPass-mininet.xml /etc/SciPass
+	  sudo cp t/etc/SciPass-mininet.xml /etc/SciPass/SciPass.xml
 	  ryu-manager Ryu.py
 
 
