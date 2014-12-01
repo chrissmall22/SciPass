@@ -26,6 +26,17 @@ import json
 from SciPass import SciPass
 
 ETH_TYPE_IP = 0x0800
+ETH_TYPE_ARP = 0x0806
+ETH_TYPE_8021Q = 0x8100
+ETH_TYPE_IPV6 = 0x86dd
+ETH_TYPE_SLOW = 0x8809
+ETH_TYPE_MPLS = 0x8847
+ETH_TYPE_8021AD = 0x88a8
+ETH_TYPE_LLDP = 0x88cc
+ETH_TYPE_8021AH = 0x88e7
+ETH_TYPE_IEEE802_3 = 0x05dc
+ETH_TYPE_CFM = 0x8902
+
 _DPID_LEN = 16
 _DPID_LEN_STR = str(_DPID_LEN)
 _DPID_FMT = '%0' + _DPID_LEN_STR + 'x'
@@ -142,7 +153,7 @@ class HPVAN():
         #--- register for configuration options
         self.CONF = cfg.CONF
         self.CONF.register_opts([
-                cfg.StrOpt('SciPassConfig',default='/etc/SciPass/SciPass.xml',
+                cfg.StrOpt('SciPassConfig',default='t/etc/SciPass.xml',
                            help='where to find the SciPass config file'),
                 ])
         
@@ -152,11 +163,12 @@ class HPVAN():
                       config_file = self.CONF.SciPassConfig )
         api.registerForwardingStateChangeHandler(self.changeSwitchForwardingState)
 
-        self.api = api
 
         self.logger.debug("Connecting to VAN controller" + self.controller)
         auth = hp.XAuthToken(user=self.username, password=self.password, server=self.controller)
         api = hp.Api(controller=self.controller, auth=auth)
+        self.api = api
+
 
 
     def start_rest(self, host, port):
@@ -173,10 +185,11 @@ class HPVAN():
             self.logger.error(self.datapaths)
             return
         
-        datapath = self.datapaths[dpid]
+        api = self.api
+        #ofp      = datapath.ofprotok
+        #parser   = datapath.ofproto_parser
 
-        ofp      = datapath.ofproto
-        parser   = datapath.ofproto_parser
+        # This assumes IPv4 since SciPass doesn't support IPv6 prefix splitting
 
         obj = {} 
         
@@ -223,75 +236,87 @@ class HPVAN():
         else:
             obj['tp_dst'] = None
 
-        if(obj['dl_type'] == None):
-            match = parser.OFPMatch( in_port     = obj['in_port'],
-                                     nw_dst      = obj['nw_dst'],
-                                     nw_dst_mask = obj['nw_dst_mask'],
-                                     nw_src      = obj['nw_src'],
-                                     nw_src_mask = obj['nw_src_mask'],
-                                     tp_src      = obj['tp_src'],
-                                     tp_dst      = obj['tp_dst'])
+        # Recreate network with mask
+        if obj['nw_dst'] is not None and obj['nw_dst_mask'] is not None:
+            new_dst =  obj['nw_dst'] + "/" +  obj['nw_dst']
         else:
-            
-            match = parser.OFPMatch( in_port     = obj['in_port'],
-                                     nw_dst      = obj['nw_dst'],
+            new_dst = None
+
+        if obj['nw_src'] is not None and obj['nw_src_mask'] is not None:
+            new_src =  obj['nw_src'] + "/" +  obj['nw_src']
+        else:
+            new_src = None
+
+        if  obj['dl_type'] is None:
+            match = hp.datatypes.Match( in_port     = obj['in_port'],
+                                     ipv4_dst      = new_dst,
                                      nw_dst_mask = obj['nw_dst_mask'],
-                                     nw_src      = obj['nw_src'],
-                                     nw_src_mask = obj['nw_src_mask'],
-                                     dl_type     = obj['dl_type'],
-                                     tp_src      = obj['tp_src'],
-                                     tp_dst      = obj['tp_dst'])
+                                     ipv4_src      = new_src,
+                                     tcp_src      = obj['tp_src'],
+                                     tcp_dst      = obj['tp_dst'])
+
+        else:
+            match = hp.datatypes.Match( in_port    = obj['in_port'],
+                                     ipv4_dst      = new_dst,
+                                     nw_dst_mask   = obj['nw_dst_mask'],
+                                     ipv4_src      = new_src,
+                                     dl_type       = obj['dl_type'],
+                                     tcp_src      = obj['tp_src'],
+                                     tcp_dst      = obj['tp_dst'])
             
         self.logger.debug("Match: " + str(match))
         
         of_actions = []
+
+        # Get OF version of Datapath
+        of_version = self._get_datapath_version(dpid)
+
         for action in actions:
             if(action['type'] == "output"):
-                of_actions.append(parser.OFPActionOutput(int(action['port']),0))
-                
+                 if of_version == "1.0.0":
+                     of_actions = hp.datatypes.Action(output=int(action['port'])).append
+
+        # Todo: Handle Instructions for OF 1.1x switches
+        #if of_version != "1.0.0":
+        #    of_instructions = hp.datatypes.Instruction(output=)
         self.logger.debug("Actions: " + str(of_actions))
+
+        flow = hp.datatypes.Flow(priority=30000, idle_timeout=30,
+                                 match=match, actions=of_actions)
         if(command == "ADD"):
-            command = ofp.OFPFC_ADD
+            api.add_flows(dpid,flow)
         elif(command == "DELETE_STRICT"):
-            command = ofp.OFPFC_DELETE_STRICT
+            api.delete_flows(dpid,flow)
         else:
             command = -1
 
         self.logger.debug("Sending flow mod with command: " + str(command))
-        self.logger.debug("Datpath: " + str(datapath))
+        self.logger.debug("DPID: " + str(dpid))
 
-        mod = parser.OFPFlowMod( datapath     = datapath,
-                                 priority     = int(priority),
-                                 match        = match,
-                                 cookie       = 0,
-                                 command      = command,
-                                 idle_timeout = int(idle_timeout),
-                                 hard_timeout = int(hard_timeout),
-                                 actions      = of_actions)
-
-        if(datapath.is_active == True):
-            datapath.send_msg(mod)
             
     def flushRules(self, dpid):
         if(not self.datapaths.has_key(dpid)):
             self.logger.error("unable to find switch with dpid " + dpid)
             return
-        
-        datapath = self.datapaths[dpid]
-        ofp      = datapath.ofproto
-        parser   = datapath.ofproto_parser
 
-         # --- create flowmod to control traffic from the prefix to the interwebs
-        match = parser.OFPMatch()
-        mod = parser.OFPFlowMod(datapath,match,0,ofp.OFPFC_DELETE)
-        
-         #--- remove mods in the flowmod cache
-        #self.flowmods[dpid] = []
-        
-        
-         #--- if dp is active then push the rules
-        if(datapath.is_active == True):
-            datapath.send_msg(mod)
+        api = self.api
+
+        # Match all Flows
+        match = hp.datatypes.Match()
+        flows = hp.datatypes.Flow(match=match)
+        api.delete_flows(dpid,flows)
+
+
+    def _get_datapath_version(self,dpid):
+        default_version = "1.0.0"
+        self.logger.debug("Getting DPID Version from controller for DPID %s" + str(dpid))
+        api = self.api
+        try:
+            datapath = api.get_datapath_detail(dpid)
+        except:
+            self.logger.debug("Can't get DPID Version, Setting version 1.0.0 for DPID" + str(dpid))
+            return default_version
+        return datapath.negotiated_version
 
 
 def start_scipass_van():
