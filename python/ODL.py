@@ -24,8 +24,6 @@ from SciPass import SciPass
 from webob import Response
 import json
 
-ETH_TYPE_IP = 0x0800
-
 """
  Forwarding rule Priorities
    BlackList  
