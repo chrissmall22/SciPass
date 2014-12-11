@@ -15,14 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import HPVAN as van
+import ODL as van
 
 def start_scipass_van():
 
     controller = "127.0.0.1"
     port = 8080
-    username = "sdn"
-    password = "skyline"
+    username = "admin"
+    password = "admin"
     van.connect_controller(controller,port)
     van.start_rest_interface('localhost',8080)
 
