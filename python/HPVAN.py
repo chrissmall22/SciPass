@@ -24,6 +24,7 @@ import hpsdnclient as hp
 import json
 
 from SciPass import SciPass
+from SciPass.ofproto import ether
 
 ETH_TYPE_IP = 0x0800
 ETH_TYPE_ARP = 0x0806
