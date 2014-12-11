@@ -10,7 +10,7 @@ clean:
 	rm -rf dist
 
 test:
-	cd python; coverage run --source=./ --omit=__init__.py,*Test.py,t/SciPass.py t/SciPassTest.py; coverage report -m; coverage xml;coverage annotate; coverage html;
+	cd python; coverage run --source=./ --omit=__init__.py,*Test.py,t/SciPass.py t/Test.py; coverage report -m; coverage xml;coverage annotate; coverage html;
 
 test_mininet:
 	cd python; python -m coverage run --source=./ --omit=__init__.py,*Test.py,t/SciPass.py t/SciPassTest_mininet.py; python -m coverage report -m; python -m coverage xml;python -m coverage annotate; python -m coverage html;
